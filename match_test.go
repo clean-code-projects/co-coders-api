@@ -8,10 +8,14 @@ import (
 type CoStyle int
 
 const (
-	Team CoStyle = iota + 1
+	Team CoStyle = iota
 	Pair
 	Mob
 )
+
+func (c CoStyle) ToString() string {
+	return []string{"Team", "Pair", "Mob"}[c]
+}
 
 // User ..
 type User struct {
@@ -66,6 +70,12 @@ func TestMatchOnCoStyleSubsetReturnsAMatch(t *testing.T) {
 	criterion := Team
 	actual := FilterOnCoStyle(users, criterion)
 	AssertEqual(t, []User{user}, actual)
+}
+
+func TestCoStyleToString(t *testing.T) {
+	AssertEqual(t, Team.ToString(), "Team")
+	AssertEqual(t, Pair.ToString(), "Pair")
+	AssertEqual(t, Mob.ToString(), "Mob")
 }
 
 func createUser(coStyles []CoStyle) User {
