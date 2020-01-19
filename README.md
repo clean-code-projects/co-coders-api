@@ -1,7 +1,5 @@
-# co-coders-api
-
-
-
+# Co-Coders API 
+[![Build Status](https://travis-ci.org/clean-code-projects/co-coders-api.svg?branch=master)](https://travis-ci.org/clean-code-projects/co-coders-api)
 
 ## development environment
 
