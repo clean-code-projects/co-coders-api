@@ -3,10 +3,10 @@ package filter_test
 import (
 	"testing"
 
-	"github.com/clean-code-projects/co-coders-api/assert"
-	"github.com/clean-code-projects/co-coders-api/criterion"
-	"github.com/clean-code-projects/co-coders-api/filter"
-	"github.com/clean-code-projects/co-coders-api/user"
+	"github.com/clean-code-projects/co-coders-api/internal/criterion"
+	"github.com/clean-code-projects/co-coders-api/internal/filter"
+	"github.com/clean-code-projects/co-coders-api/internal/user"
+	"github.com/clean-code-projects/co-coders-api/pkg/assert"
 )
 
 

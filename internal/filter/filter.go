@@ -1,8 +1,8 @@
 package filter
 
 import (
-	"github.com/clean-code-projects/co-coders-api/criterion"
-	"github.com/clean-code-projects/co-coders-api/user"
+	"github.com/clean-code-projects/co-coders-api/internal/criterion"
+	"github.com/clean-code-projects/co-coders-api/internal/user"
 )
 
 

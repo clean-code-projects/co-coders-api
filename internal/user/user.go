@@ -1,6 +1,6 @@
 package user
 
-import "github.com/clean-code-projects/co-coders-api/criterion"
+import "github.com/clean-code-projects/co-coders-api/internal/criterion"
 
 
 // User ..
