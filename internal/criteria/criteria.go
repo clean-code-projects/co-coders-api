@@ -1,10 +1,10 @@
 package criteria
 
-// CoStyle ..
-type CoStyle int
+// CollabStyle ..
+type CollabStyle int
 
 const (
-	Team CoStyle = iota + 1
+	Team CollabStyle = iota + 1
 	Pair
 	Mob
 )

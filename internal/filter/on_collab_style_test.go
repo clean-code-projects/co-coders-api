@@ -11,31 +11,31 @@ import (
 
 func TestFilterOnCoStyleReturnsEmpty(t *testing.T) {
 	style := criteria.Team
-	actual := filter.OnCoStyle([]user.User{}, style)
+	actual := filter.OnCollabStyle([]user.User{}, style)
 	assert.Equals(t, []user.User{}, actual)
 }
 
 func TestFilterOnCoStyleReturnsNoMatch(t *testing.T) {
-	aUser := user.New([]criteria.CoStyle{criteria.Team})
+	aUser := user.New([]criteria.CollabStyle{criteria.Team})
 	users := []user.User{aUser}
 	style := criteria.Mob
-	actual := filter.OnCoStyle(users, style)
+	actual := filter.OnCollabStyle(users, style)
 	assert.Equals(t, []user.User{}, actual)
 }
 
 func TestFilterOnCoStyleReturnsAMatch(t *testing.T) {
-	aUser := user.New([]criteria.CoStyle{criteria.Team})
+	aUser := user.New([]criteria.CollabStyle{criteria.Team})
 	users := []user.User{aUser}
 	style := criteria.Team
-	actual := filter.OnCoStyle(users, style)
+	actual := filter.OnCollabStyle(users, style)
 	assert.Equals(t, []user.User{aUser}, actual)
 }
 
 func TestFilterOnCoStyleSubsetReturnsAMatch(t *testing.T) {
-	aUser := user.New([]criteria.CoStyle{criteria.Team, criteria.Pair})
+	aUser := user.New([]criteria.CollabStyle{criteria.Team, criteria.Pair})
 	users := []user.User{aUser}
 	criterion := criteria.Team
-	actual := filter.OnCoStyle(users, criterion)
+	actual := filter.OnCollabStyle(users, criterion)
 	assert.Equals(t, []user.User{aUser}, actual)
 }
 

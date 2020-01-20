@@ -4,13 +4,13 @@ import "github.com/clean-code-projects/co-coders-api/internal/criteria"
 
 // User ..
 type User struct {
-	CoStyles []criteria.CoStyle
+	CollabStyles []criteria.CollabStyle
 }
 
-// HasCoStyle ..
-func (u User) HasCoStyle(coStyle criteria.CoStyle) bool {
-	for _, style := range u.CoStyles {
-		if style == coStyle {
+// HasCollabStyle ..
+func (u User) HasCollabStyle(collabStyle criteria.CollabStyle) bool {
+	for _, style := range u.CollabStyles {
+		if style == collabStyle {
 			return true
 		}
 	}
@@ -18,6 +18,6 @@ func (u User) HasCoStyle(coStyle criteria.CoStyle) bool {
 }
 
 // New ..
-func New(coStyles []criteria.CoStyle) User {
-	return User{CoStyles:coStyles}
+func New(collabStyles []criteria.CollabStyle) User {
+	return User{CollabStyles: collabStyles}
 }

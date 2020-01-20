@@ -5,11 +5,11 @@ import (
 	"github.com/clean-code-projects/co-coders-api/internal/user"
 )
 
-// OnCoStyle ..
-func OnCoStyle(users []user.User, coStyle criteria.CoStyle) (matchedUsers []user.User) {
+// OnCollabStyle ..
+func OnCollabStyle(users []user.User, coStyle criteria.CollabStyle) (matchedUsers []user.User) {
 	matchedUsers = []user.User{}
 	for _, aUser := range users {
-		if aUser.HasCoStyle(coStyle) {
+		if aUser.HasCollabStyle(coStyle) {
 			matchedUsers = append(matchedUsers, aUser)
 		}
 	}
