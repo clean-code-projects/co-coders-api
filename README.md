@@ -1,5 +1,13 @@
-# Co-Coders API 
+# Co-Coders API
+
 [![Build Status](https://travis-ci.org/clean-code-projects/co-coders-api.svg?branch=master)](https://travis-ci.org/clean-code-projects/co-coders-api)
+
+## contribute
+
+```sh
+# test
+go test -v ./...
+```
 
 ## development environment
 
@@ -13,5 +21,4 @@ here are some extensions you can use to make the sharing the coding a bit easier
 
 ## other resources
 
-- [Dep](https://github.com/golang/dep) - Dependency managment for the project, instead of putting all packages and libraries in the global space.
 - [project-layout](https://github.com/golang-standards/project-layout)
