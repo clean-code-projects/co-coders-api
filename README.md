@@ -1,5 +1,13 @@
-# Co-Coders API 
+# Co-Coders API
+
 [![Build Status](https://travis-ci.org/clean-code-projects/co-coders-api.svg?branch=master)](https://travis-ci.org/clean-code-projects/co-coders-api)
+
+## contribute
+
+```sh
+# test
+go test -coverprofile cover.out ./...
+```
 
 ## development environment
 
@@ -10,8 +18,45 @@ here are some extensions you can use to make the sharing the coding a bit easier
 - [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare)
 - [Live Share Chat](https://marketplace.visualstudio.com/items?itemName=karigari.chat)
 - [Go](https://marketplace.visualstudio.com/items?itemName=ms-vscode.Go)
+- [Coverage gutters](https://github.com/ryanluker/vscode-coverage-gutters)
+- [Run on Save](https://github.com/emeraldwalk/vscode-runonsave.git)
+
+### Workspace settings for code coverage
+
+```(json)
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"coverage-gutters.coverageReportFileName": "coverage.xml",
+		"go.coverOnSave": true,
+		"go.coverOnSingleTest": true,
+		"go.coverOnSingleTestFile": true,
+		"go.testOnSave": true,
+		"emeraldwalk.runonsave": {
+			"commands": [
+				{
+					"match": "\\.go$",
+					"isAsync": true,
+					"cmd": "gocov convert cover.out | gocov-xml > coverage.xml"
+				}
+			]
+		}
+	
+	}
+}
+```
+
+## go doc Documentation
+```sh
+
+```
+Point your browser  to `http://localhost:6060/pkg/github.com/clean-code-projects/co-coders-api/`
+
 
 ## other resources
 
-- [Dep](https://github.com/golang/dep) - Dependency managment for the project, instead of putting all packages and libraries in the global space.
 - [project-layout](https://github.com/golang-standards/project-layout)
