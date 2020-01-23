@@ -50,9 +50,9 @@ here are some extensions you can use to make the sharing the coding a bit easier
 }
 ```
 
-## go doc Documentation
+## godoc Documentation
 ```sh
-
+godoc -http=localhost:6060   
 ```
 Point your browser  to `http://localhost:6060/pkg/github.com/clean-code-projects/co-coders-api/`
 
