@@ -11,7 +11,8 @@ go test -v ./...
 
 ## development environment
 
-We will be primary using VS Code.
+We will primarily be using VS Code.
+
 
 here are some extensions you can use to make the sharing the coding a bit easier:
 
