@@ -1,6 +1,7 @@
 # Co-Coders API
 
 [![Build Status](https://travis-ci.org/clean-code-projects/co-coders-api.svg?branch=master)](https://travis-ci.org/clean-code-projects/co-coders-api)
+[![Codecov][codecov-image]][codecov-url]
 
 ## contribute
 
@@ -16,7 +17,6 @@ go test -coverprofile cover.out ./...
 
 We will primarily be using VS Code.
 
-
 here are some extensions you can use to make the sharing the coding a bit easier:
 
 - [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare)
@@ -29,38 +29,41 @@ here are some extensions you can use to make the sharing the coding a bit easier
 
 ```(json)
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"coverage-gutters.coverageReportFileName": "coverage.xml",
-		"go.coverOnSave": true,
-		"go.coverOnSingleTest": true,
-		"go.coverOnSingleTestFile": true,
-		"go.testOnSave": true,
-		"emeraldwalk.runonsave": {
-			"commands": [
-				{
-					"match": "\\.go$",
-					"isAsync": true,
-					"cmd": "gocov convert cover.out | gocov-xml > coverage.xml"
-				}
-			]
-		}
-	
-	}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "coverage-gutters.coverageReportFileName": "coverage.xml",
+    "go.coverOnSave": true,
+    "go.coverOnSingleTest": true,
+    "go.coverOnSingleTestFile": true,
+    "go.testOnSave": true,
+    "emeraldwalk.runonsave": {
+      "commands": [
+        {
+          "match": "\\.go$",
+          "isAsync": true,
+          "cmd": "gocov convert cover.out | gocov-xml > coverage.xml"
+        }
+      ]
+    }
+  }
 }
 ```
 
 ## godoc Documentation
-```sh
-godoc -http=localhost:6060   
-```
-Point your browser  to `http://localhost:6060/pkg/github.com/clean-code-projects/co-coders-api/`
 
+```sh
+godoc -http=localhost:6060
+```
+
+Point your browser  to `http://localhost:6060/pkg/github.com/clean-code-projects/co-coders-api/`
 
 ## other resources
 
 - [project-layout](https://github.com/golang-standards/project-layout)
+
+[codecov-image]: https://codecov.io/gh/clean-code-projects/co-coders-api/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/clean-code-projects/co-coders-api
