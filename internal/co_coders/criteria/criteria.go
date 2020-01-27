@@ -1,5 +1,7 @@
 package criteria
 
+
+
 // CollabStyle ..
 type CollabStyle int
 
@@ -8,4 +10,13 @@ const (
 	Pair
 	Mob
 )
+
+// Criteria ..
+type Criteria struct {
+	CollabStyles []CollabStyle
+}
+
+type Match struct {
+	Score float64
+}
 
