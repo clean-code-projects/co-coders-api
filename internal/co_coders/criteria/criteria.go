@@ -1,22 +1,24 @@
 package criteria
 
 
-
-// CollabStyle ..
-type CollabStyle int
-
-const (
-	Team CollabStyle = iota + 1
-	Pair
-	Mob
-)
-
 // Criteria ..
 type Criteria struct {
-	CollabStyles []CollabStyle
+	CollabStyles CollabStyles
 }
 
-type Match struct {
+// New ...
+func New() Criteria {
+	return Criteria{CollabStyles:CollabStyles{}}
+}
+
+// Match ..
+func (c Criteria) Match(criteria Criteria) Matches {
+	collabStyleMatches := c.CollabStyles.Match(criteria.CollabStyles)
+	onCollabStylesScore := float64(len(collabStyleMatches)) / float64(len(c.CollabStyles))
+	return Matches{Score: onCollabStylesScore}
+}
+
+// Matches ..
+type Matches struct {
 	Score float64
 }
-
