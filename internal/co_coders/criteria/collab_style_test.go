@@ -11,7 +11,8 @@ func TestMatchWithNoCollabStylesReturnsEmpty(t *testing.T) {
 
 	result := collabStyles.Match(noCollabStyles)
 
-	assert.Equal(t, noCollabStyles, result)
+	assert.Equal(t, noCollabStyles, result.Matches)
+	assert.Equal(t, 0.0, result.Score)
 }
 
 func TestMatchWithNoMatchingCollabStylesReturnsNoMatches(t *testing.T) {
@@ -20,7 +21,8 @@ func TestMatchWithNoMatchingCollabStylesReturnsNoMatches(t *testing.T) {
 
 	result := collabStyles.Match(stylesToMatch)
 
-	assert.Equal(t, CollabStyles{}, result)
+	assert.Equal(t, CollabStyles{}, result.Matches)
+	assert.Equal(t, 0.0, result.Score)
 }
 
 func TestMatchWithOneMatchingCollabStyleReturnsMatch(t *testing.T) {
@@ -28,7 +30,8 @@ func TestMatchWithOneMatchingCollabStyleReturnsMatch(t *testing.T) {
 
 	result := matchingCollabStyle.Match(matchingCollabStyle)
 
-	assert.Equal(t, matchingCollabStyle, result)
+	assert.Equal(t, matchingCollabStyle, result.Matches)
+	assert.Equal(t, 1.0, result.Score)
 }
 
 func TestMatchWithSubsetOfMatchingCollabStylesReturnsOnlyMatchingStyles(t *testing.T) {
@@ -37,5 +40,6 @@ func TestMatchWithSubsetOfMatchingCollabStylesReturnsOnlyMatchingStyles(t *testi
 
 	result := collabStyles.Match(stylesToMatch)
 
-	assert.Equal(t, CollabStyles{Pair}, result)
+	assert.Equal(t, CollabStyles{Pair}, result.Matches)
+	assert.Equal(t, 0.5, result.Score)
 }

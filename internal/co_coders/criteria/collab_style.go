@@ -2,6 +2,8 @@ package criteria
 
 // CollabStyle ..
 type CollabStyle int
+
+// CollabStyle Constants
 const (
 	Team CollabStyle = iota + 1
 	Pair
@@ -21,13 +23,31 @@ func (c CollabStyles) HasCollabStyle(collabStyle CollabStyle) bool {
 	return false
 }
 
+// CollabStylesMatch ..
+type CollabStylesMatch struct {
+	Matches CollabStyles
+	Score   float64
+}
+
 // Match ..
-func (c CollabStyles) Match(stylesToMatch CollabStyles) (matched CollabStyles)  {
-	matched = CollabStyles{}
+func (c CollabStyles) Match(stylesToMatch CollabStyles) CollabStylesMatch {
+	matches := c.collectMatchesFor(stylesToMatch)
+	return CollabStylesMatch{
+		Matches: matches,
+		Score: c.calculateScore(matches),
+	}
+}
+
+func (c CollabStyles) collectMatchesFor(stylesToMatch CollabStyles) CollabStyles {
+	matches := CollabStyles{}
 	for _, style := range stylesToMatch {
 		if c.HasCollabStyle(style) {
-			matched = append(matched, style)
+			matches = append(matches, style)
 		}
 	}
-	return matched
+	return matches
+}
+
+func (c CollabStyles) calculateScore(matchedStyles CollabStyles) float64 {
+	return float64(len(matchedStyles)) / float64(len(c))
 }
