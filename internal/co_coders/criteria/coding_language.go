@@ -5,15 +5,37 @@ type CodingLanguage int
 
 // CodingLanguage constants
 const (
-	C CodingLanguage = iota
+	AssemblyLanguage CodingLanguage = iota
+	Bash
+	C 
+	Clojure
+	CPP
 	CSharp
+	Dart
+	Erlang
+	FSharp
 	Go
+	Haskell
 	Java
 	JavaScript
+	Kotlin
+	Lisp
+	ObjectiveC
+	ObjectPascal
+	Perl
+	PHP
 	Python
+	R
+	Ruby
+	Rust
+	Scala
+	Swift
+	SQL
+	TypeScript
+	VisualBasic
 )
 
-// CodingLanguage
+// CodingLanguages ..
 type CodingLanguages []CodingLanguage
 
 // HasCodingLanguage ..
