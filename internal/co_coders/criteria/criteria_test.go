@@ -49,14 +49,6 @@ func NewCollabStyles(styles ...CollabStyle) CollabStyles {
 	return append(CollabStyles{}, styles...)
 }
 
-type Criterion interface {
-	String() string
-}
-
-type Matchable interface {
-	Match(m Matchable) []Criterion
-}
-
 func NewCriteria(matchables ...Matchable) Criteria {
 	return New()
 }
