@@ -10,6 +10,11 @@ import (
 type TimeZone struct {
 	min float64
 	max float64
+	name string
+}
+
+func (t TimeZone) Name() string {
+	return ""
 }
 
 
@@ -55,7 +60,7 @@ func nextIncrementalTimeZone(tz float64) (float64, bool) {
 }
 
 
-func (t TimeZone) Match(targetTimeZone TimeZone) (matches []float64) {
+func (t TimeZone) Match(targetTimeZone TimeZone) (matches []Criterion) {
 	 booleanMap := make(map[float64]bool)
 	 for _, num := range makeTimeZoneRange(targetTimeZone.min, targetTimeZone.max) {
 	 	booleanMap[num] = true
@@ -65,22 +70,34 @@ func (t TimeZone) Match(targetTimeZone TimeZone) (matches []float64) {
 
 	 for _, num := range ourTimeZone {
 	 	if _, ok := booleanMap[num]; ok {
-	 		matches = append(matches, num)
+	 		matches = append(matches, NewTimeZone(num, num)...)
 		}
 	 }
 	 return matches
 }
 
-func NewTimeZone(min, max float64) TimeZone {
-	return TimeZone{min, max}
+type TimeZoneMatcher struct {
+
+}
+
+func (t TimeZoneMatcher) Match(criteria, targetCriteria []Criterion) []Criterion {
+	targetTimeZone := targetCriteria[0].(TimeZone)
+	timeZone  := criteria[0].(TimeZone)
+	return timeZone.Match(targetTimeZone)
+}
+
+
+func NewTimeZone(min, max float64) []Criterion {
+	return []Criterion{TimeZone{min, max, ""}}
 }
 
 func TestGMTMatchesGMT(t *testing.T) {
 	gmt := 0.0
 	timezone := NewTimeZone(gmt, gmt)
 	targetTimeZone := NewTimeZone(gmt, gmt)
-	result := timezone.Match(targetTimeZone)
-	expected := []float64{0.0}
+	matcher := TimeZoneMatcher{}
+	result := matcher.Match(timezone, targetTimeZone)
+	expected := generateTimeZones(0.0)
 	assert.Equal(t, expected, result)
 }
 
@@ -89,9 +106,17 @@ func TestNZDMatchesAST(t *testing.T) {
 	ast := -9.0
 	timezone := NewTimeZone(nzd, ast)
 	targetTimeZone := NewTimeZone(nzd, ast)
-	result := timezone.Match(targetTimeZone)
-	expected := []float64{11.0, 12.0, -11.0, -10.0, -9.0}
+	matcher := TimeZoneMatcher{}
+	result := matcher.Match(timezone, targetTimeZone)
+	expected := generateTimeZones(11.0, 12.0, -11.0, -10.0, -9.0)
 	assert.Subset(t, expected, result)
+}
+
+func generateTimeZones(timeZones ...float64) (results []Criterion) {
+	for _, tz := range timeZones {
+		results = append(results, TimeZone{tz, tz, ""})
+	}
+	return results
 }
 
 func TestPSTMatchesEST(t *testing.T) {
@@ -99,8 +124,9 @@ func TestPSTMatchesEST(t *testing.T) {
 	est := -5.0
 	timezone := NewTimeZone(pst, est)
 	targetTimeZone := NewTimeZone(pst, est)
-	result := timezone.Match(targetTimeZone)
-	expected := []float64{-8.0, -7.0, -6.0, -5.0}
+	matcher := TimeZoneMatcher{}
+	result := matcher.Match(timezone, targetTimeZone)
+	expected := generateTimeZones(-8.0, -7.0, -6.0, -5.0)
 	assert.Subset(t, expected, result)
 }
 
@@ -109,7 +135,8 @@ func TestILSTMatchesINST(t *testing.T) {
 	inst := 5.5
 	timezone := NewTimeZone(ilst, inst)
 	targetTimeZone := NewTimeZone(ilst, inst)
-	result := timezone.Match(targetTimeZone)
-	expected := []float64{3.5, 3.0, 4.0, 4.5, 5.0, 5.5}
+	matcher := TimeZoneMatcher{}
+	result := matcher.Match(timezone, targetTimeZone)
+	expected := generateTimeZones(3.5, 3.0, 4.0, 4.5, 5.0, 5.5)
 	assert.Subset(t, expected, result)
 }
