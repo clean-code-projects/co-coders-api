@@ -27,7 +27,7 @@ here are some extensions you can use to make the sharing the coding a bit easier
 
 ### Workspace settings for code coverage
 
-```(json)
+```json
 {
   "folders": [
     {
