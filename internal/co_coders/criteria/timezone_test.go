@@ -21,8 +21,8 @@ func TestNZDMatchesAST(t *testing.T) {
 	timezone := NewTimeZoneRange(nzd, ast)
 	targetTimeZone := NewTimeZoneRange(nzd, ast)
 	result := timezone.Match(targetTimeZone)
-	expected := generateTimeZones(11.0, 12.0, -11.0, -10.0, -9.0)
-	assert.Subset(t, expected, result)
+	expected := generateTimeZones(11.0, 12.0, 12.75, -11.0, -10.0, -9.0)
+	assert.Equal(t, expected, result)
 }
 
 func TestPSTMatchesEST(t *testing.T) {
@@ -32,7 +32,7 @@ func TestPSTMatchesEST(t *testing.T) {
 	targetTimeZone := NewTimeZoneRange(pst, est)
 	result := timezone.Match(targetTimeZone)
 	expected := generateTimeZones(-8.0, -7.0, -6.0, -5.0)
-	assert.Subset(t, expected, result)
+	assert.Equal(t, expected, result)
 }
 
 func TestILSTMatchesINST(t *testing.T) {
@@ -41,14 +41,32 @@ func TestILSTMatchesINST(t *testing.T) {
 	timezone := NewTimeZoneRange(ilst, inst)
 	targetTimeZone := NewTimeZoneRange(ilst, inst)
 	result := timezone.Match(targetTimeZone)
-	expected := generateTimeZones(3.5, 3.0, 4.0, 4.5, 5.0, 5.5)
-	assert.Subset(t, expected, result)
+	expected := generateTimeZones(3.0, 3.5, 4.0, 4.5, 5.0, 5.5)
+	assert.Equal(t, expected, result)
+}
+
+func TestMatchReturnsOnlyIntersectingMatches(t *testing.T) {
+	timezone := NewTimeZoneRange(0.0, 5.0)
+	targetTimeZone := NewTimeZoneRange(4.0, 6.0)
+	result := timezone.Match(targetTimeZone)
+	expected := generateTimeZones(4.0, 4.5, 5.0)
+	assert.Equal(t, expected, result)
 }
 
 func TestMatchWithInvalidTypeReturnsNoMatches(t *testing.T) {
 	timezone := NewTimeZoneRange(0.0, 0.0)
 	result := timezone.Match(invalidMatchable{})
 	assert.Equal(t, []Criterion{}, result)
+}
+
+func TestNextFullTimeZone(t *testing.T){
+	tests := [][]float64{
+		{11, 12}, {12, -11}, {-11, -10}, {-10, -9},
+	}
+
+	for _, test := range tests {
+		assert.Equal(t, test[1], nextFullTimeZone(test[0]))
+	}
 }
 
 func TestTimeZoneString(t *testing.T) {
