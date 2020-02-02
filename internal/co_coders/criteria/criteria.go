@@ -11,7 +11,7 @@ func New() Criteria {
 	return Criteria{CollabStyles:CollabStyles{}}
 }
 
-// Match ..
+// Criterion ..
 func (c Criteria) Match(criteria Criteria) Matches {
 	collabStyleMatches := c.CollabStyles.Match(criteria.CollabStyles)
 	onCollabStylesScore := float64(len(collabStyleMatches)) / float64(len(c.CollabStyles))

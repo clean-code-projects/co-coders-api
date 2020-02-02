@@ -1,6 +1,7 @@
 package criteria
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"math"
 	"testing"
@@ -8,30 +9,35 @@ import (
 
 
 type TimeZone struct {
-	min float64
-	max float64
-	name string
+	offset float64
 }
 
-func (t TimeZone) Name() string {
-	return ""
+func (t TimeZone) String() string {
+	return fmt.Sprintf("TimeZone{offset: %.2f}", t.offset)
 }
 
+func NewTimeZone(offset float64) TimeZone {
+	return TimeZone{offset:offset}
+}
+
+func NewTimeZoneRange(min, max float64) TimeZoneRange {
+	return TimeZoneRange{min, max}
+}
 
 func makeTimeZoneRange(min, max float64) []float64 {
-	var timeZoneSlice []float64
-	timeZoneSlice = append(timeZoneSlice, min)
+	var result []float64
+	result = append(result, min)
 	tz := min
 	for tz < math.Floor(max) {
 		zone, ok := nextIncrementalTimeZone(tz)
 		if ok {
-			timeZoneSlice = append(timeZoneSlice, zone)
+			result = append(result, zone)
 		}
 		nextTz := nextFullTimeZone(tz)
-		timeZoneSlice = append(timeZoneSlice, nextTz)
+		result = append(result, nextTz)
 		tz = nextTz
 	}
-	return timeZoneSlice
+	return result
 }
 
 func nextFullTimeZone(tz float64) float64 {
@@ -59,44 +65,36 @@ func nextIncrementalTimeZone(tz float64) (float64, bool) {
 	return 0.0, false
 }
 
+type TimeZoneRange struct {
+	min float64
+	max float64
+}
 
-func (t TimeZone) Match(targetTimeZone TimeZone) (matches []Criterion) {
-	 booleanMap := make(map[float64]bool)
-	 for _, num := range makeTimeZoneRange(targetTimeZone.min, targetTimeZone.max) {
-	 	booleanMap[num] = true
-	 }
+func (t TimeZoneRange) Match(target Matchable) (matches []Criterion) {
+	booleanMap := make(map[float64]bool)
 
-	 ourTimeZone := makeTimeZoneRange(t.min, t.max)
+	targetTimeZoneRange, ok := target.(TimeZoneRange)
+	if !ok {
+		return []Criterion{}
+	}
 
-	 for _, num := range ourTimeZone {
-	 	if _, ok := booleanMap[num]; ok {
-	 		matches = append(matches, NewTimeZone(num, num)...)
+	for _, offset := range makeTimeZoneRange(targetTimeZoneRange.min, targetTimeZoneRange.max) {
+		booleanMap[offset] = true
+	}
+
+	for _, offset := range makeTimeZoneRange(t.min, t.max) {
+		if _, ok := booleanMap[offset]; ok {
+			matches = append(matches, NewTimeZone(offset))
 		}
-	 }
-	 return matches
-}
-
-type TimeZoneMatcher struct {
-
-}
-
-func (t TimeZoneMatcher) Match(criteria, targetCriteria []Criterion) []Criterion {
-	targetTimeZone := targetCriteria[0].(TimeZone)
-	timeZone  := criteria[0].(TimeZone)
-	return timeZone.Match(targetTimeZone)
-}
-
-
-func NewTimeZone(min, max float64) []Criterion {
-	return []Criterion{TimeZone{min, max, ""}}
+	}
+	return matches
 }
 
 func TestGMTMatchesGMT(t *testing.T) {
 	gmt := 0.0
-	timezone := NewTimeZone(gmt, gmt)
-	targetTimeZone := NewTimeZone(gmt, gmt)
-	matcher := TimeZoneMatcher{}
-	result := matcher.Match(timezone, targetTimeZone)
+	timezone := NewTimeZoneRange(gmt, gmt)
+	targetTimeZone := NewTimeZoneRange(gmt, gmt)
+	result := timezone.Match(targetTimeZone)
 	expected := generateTimeZones(0.0)
 	assert.Equal(t, expected, result)
 }
@@ -104,28 +102,20 @@ func TestGMTMatchesGMT(t *testing.T) {
 func TestNZDMatchesAST(t *testing.T) {
 	nzd := 11.0
 	ast := -9.0
-	timezone := NewTimeZone(nzd, ast)
-	targetTimeZone := NewTimeZone(nzd, ast)
-	matcher := TimeZoneMatcher{}
-	result := matcher.Match(timezone, targetTimeZone)
+	timezone := NewTimeZoneRange(nzd, ast)
+	targetTimeZone := NewTimeZoneRange(nzd, ast)
+	result := timezone.Match(targetTimeZone)
 	expected := generateTimeZones(11.0, 12.0, -11.0, -10.0, -9.0)
 	assert.Subset(t, expected, result)
 }
 
-func generateTimeZones(timeZones ...float64) (results []Criterion) {
-	for _, tz := range timeZones {
-		results = append(results, TimeZone{tz, tz, ""})
-	}
-	return results
-}
 
 func TestPSTMatchesEST(t *testing.T) {
 	pst := -8.0
 	est := -5.0
-	timezone := NewTimeZone(pst, est)
-	targetTimeZone := NewTimeZone(pst, est)
-	matcher := TimeZoneMatcher{}
-	result := matcher.Match(timezone, targetTimeZone)
+	timezone := NewTimeZoneRange(pst, est)
+	targetTimeZone := NewTimeZoneRange(pst, est)
+	result := timezone.Match(targetTimeZone)
 	expected := generateTimeZones(-8.0, -7.0, -6.0, -5.0)
 	assert.Subset(t, expected, result)
 }
@@ -133,10 +123,33 @@ func TestPSTMatchesEST(t *testing.T) {
 func TestILSTMatchesINST(t *testing.T) {
 	ilst := 3.0
 	inst := 5.5
-	timezone := NewTimeZone(ilst, inst)
-	targetTimeZone := NewTimeZone(ilst, inst)
-	matcher := TimeZoneMatcher{}
-	result := matcher.Match(timezone, targetTimeZone)
+	timezone := NewTimeZoneRange(ilst, inst)
+	targetTimeZone := NewTimeZoneRange(ilst, inst)
+	result := timezone.Match(targetTimeZone)
 	expected := generateTimeZones(3.5, 3.0, 4.0, 4.5, 5.0, 5.5)
 	assert.Subset(t, expected, result)
+}
+
+func TestMatchWithInvalidTypeReturnsNoMatches(t *testing.T) {
+	timezone := NewTimeZoneRange(0.0, 0.0)
+	result := timezone.Match(invalidMatchable{})
+	assert.Equal(t, []Criterion{}, result)
+}
+
+func TestTimeZoneString(t *testing.T){
+	timeZone := NewTimeZone(1.0)
+	assert.Equal(t, "TimeZone{offset: 1.00}",timeZone.String())
+}
+
+func generateTimeZones(timeZones ...float64) (results []Criterion) {
+	for _, tz := range timeZones {
+		results = append(results, NewTimeZone(tz))
+	}
+	return results
+}
+
+type invalidMatchable struct {}
+
+func (i invalidMatchable) Match(m Matchable) []Criterion {
+	return []Criterion{}
 }

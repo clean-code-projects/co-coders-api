@@ -21,7 +21,7 @@ func (c CollabStyles) HasCollabStyle(collabStyle CollabStyle) bool {
 	return false
 }
 
-// Match ..
+// Criterion ..
 func (c CollabStyles) Match(stylesToMatch CollabStyles) (matched CollabStyles)  {
 	matched = CollabStyles{}
 	for _, style := range stylesToMatch {
