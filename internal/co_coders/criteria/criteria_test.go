@@ -34,7 +34,7 @@ func TestMatchScore50Percent(t *testing.T) {
 }
 
 func TestMatchForTimeZoneCollabStyleAndCodingLanguage(t *testing.T){
-	tz := NewTimeZone(0.0, 0.0)
+	tz := NewTimeZoneRange(0.0, 0.0)
 	//cs := NewCollabStyles(Pair, Team)
 	//cl := NewCodingLanguages(JavaScript, Java)
 	criteria := NewCriteria(tz /* cs, cl*/)
@@ -49,10 +49,6 @@ func NewCollabStyles(styles ...CollabStyle) CollabStyles {
 	return append(CollabStyles{}, styles...)
 }
 
-type Criterion interface {
-	Name() string
-}
-
-func NewCriteria(matchables ...[]Criterion) Criteria {
+func NewCriteria(matchables ...Matchable) Criteria {
 	return New()
 }

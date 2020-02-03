@@ -22,3 +22,14 @@ func (c Criteria) Match(criteria Criteria) Matches {
 type Matches struct {
 	Score float64
 }
+
+// Criterion ..
+type Criterion interface {
+	String() string
+}
+
+// Matchable ..
+type Matchable interface {
+	Match(m Matchable) []Criterion
+}
+

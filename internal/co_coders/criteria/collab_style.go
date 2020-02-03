@@ -2,6 +2,8 @@ package criteria
 
 // CollabStyle ..
 type CollabStyle int
+
+// CollabStyle Constants ..
 const (
 	Team CollabStyle = iota + 1
 	Pair
