@@ -31,7 +31,6 @@ func NewTimeZoneRange(min, max float64) TimeZoneRange {
 	return TimeZoneRange{min, max}
 }
 
-
 // Match ..
 func (t TimeZoneRange) Match(targetTimeZoneRange Matchable) (matches []Criterion) {
 	matches = []Criterion{}
@@ -54,19 +53,29 @@ func (t TimeZoneRange) Match(targetTimeZoneRange Matchable) (matches []Criterion
 	return matches
 }
 
-
 func makeOffsetRange(min, max float64) []float64 {
 	var result []float64
 	result = append(result, min)
+	
 	tz := min
-	for  tz < math.Floor(max) {
-		zone, ok := nextIncrementalTimeZone(tz)
-		if ok {
-			result = append(result, zone)
-		}
+	for  tz != math.Floor(max) {
+		result = addIncrementalTimeZone(tz, result)
 		nextTz := nextFullTimeZone(tz)
 		result = append(result, nextTz)
 		tz = nextTz
+	}
+
+	if result[len(result)-1] != max {
+		result = addIncrementalTimeZone(tz, result)
+	}
+	
+	return result
+}
+
+func addIncrementalTimeZone(tz float64, result []float64) []float64 {
+	zone, ok := nextIncrementalTimeZone(tz)
+	if ok {
+		result = append(result, zone)
 	}
 	return result
 }

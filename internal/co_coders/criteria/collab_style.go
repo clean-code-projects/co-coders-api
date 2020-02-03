@@ -2,6 +2,8 @@ package criteria
 
 // CollabStyle ..
 type CollabStyle int
+
+// CollabStyle Constants ..
 const (
 	Team CollabStyle = iota + 1
 	Pair
@@ -21,7 +23,7 @@ func (c CollabStyles) HasCollabStyle(collabStyle CollabStyle) bool {
 	return false
 }
 
-// Criterion ..
+// Match ..
 func (c CollabStyles) Match(stylesToMatch CollabStyles) (matched CollabStyles)  {
 	matched = CollabStyles{}
 	for _, style := range stylesToMatch {

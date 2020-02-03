@@ -48,7 +48,7 @@ func (c CodingLanguages) HasCodingLanguage(targetLanguage CodingLanguage) bool {
 	return false
 }
 
-// Criterion ..
+// Match ..
 func (c CodingLanguages) Match(targetLanguages CodingLanguages) CodingLanguages {
 	matches := CodingLanguages{}
 	for _, language := range targetLanguages {
