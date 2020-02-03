@@ -21,7 +21,7 @@ func TestNZDMatchesAST(t *testing.T) {
 	timezone := NewTimeZoneRange(nzd, ast)
 	targetTimeZone := NewTimeZoneRange(nzd, ast)
 	result := timezone.Match(targetTimeZone)
-	expected := generateTimeZones(11.0, 12.0, 12.75, -11.0, -10.0, -9.0)
+	expected := generateTimeZones(11.0, 12.0, 12.75, -11.0, -10.0, -9.5, -9.0)
 	assert.Equal(t, expected, result)
 }
 

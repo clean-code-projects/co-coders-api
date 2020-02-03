@@ -5,27 +5,34 @@ import (
 	"math"
 )
 
+// TimeZone ..
 type TimeZone struct {
 	offset float64
 }
 
+// String ..
 func (t TimeZone) String() string {
 	return fmt.Sprintf("TimeZone{offset: %.2f}", t.offset)
 }
 
+// NewTimeZone ..
 func NewTimeZone(offset float64) TimeZone {
 	return TimeZone{offset: offset}
 }
 
+// TimeZoneRange ..
 type TimeZoneRange struct {
 	min float64
 	max float64
 }
 
+// NewTimeZoneRange ..
 func NewTimeZoneRange(min, max float64) TimeZoneRange {
 	return TimeZoneRange{min, max}
 }
 
+
+// Match ..
 func (t TimeZoneRange) Match(targetTimeZoneRange Matchable) (matches []Criterion) {
 	matches = []Criterion{}
 	booleanMap := make(map[float64]bool)

@@ -11,7 +11,7 @@ func New() Criteria {
 	return Criteria{CollabStyles:CollabStyles{}}
 }
 
-// Criterion ..
+// Match ..
 func (c Criteria) Match(criteria Criteria) Matches {
 	collabStyleMatches := c.CollabStyles.Match(criteria.CollabStyles)
 	onCollabStylesScore := float64(len(collabStyleMatches)) / float64(len(c.CollabStyles))
@@ -23,10 +23,12 @@ type Matches struct {
 	Score float64
 }
 
+// Criterion ..
 type Criterion interface {
 	String() string
 }
 
+// Matchable ..
 type Matchable interface {
 	Match(m Matchable) []Criterion
 }
