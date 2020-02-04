@@ -1,45 +1,31 @@
 package criteria
 
-// CodingLanguage ..
-type CodingLanguage int
+import "fmt"
 
-// CodingLanguage constants
-const (
-	AssemblyLanguage CodingLanguage = iota
-	Bash
-	C 
-	Clojure
-	CPP
-	CSharp
-	Dart
-	Erlang
-	FSharp
-	Go
-	Haskell
-	Java
-	JavaScript
-	Kotlin
-	Lisp
-	ObjectiveC
-	ObjectPascal
-	Perl
-	PHP
-	Python
-	R
-	Ruby
-	Rust
-	Scala
-	Swift
-	SQL
-	TypeScript
-	VisualBasic
-)
+// CodingLanguage ..
+type CodingLanguage struct {
+	name string
+}
+
+// String ..
+func (c CodingLanguage) String() string {
+	return fmt.Sprintf("CodingLanguage{name: %s}", c.name)
+}
+
+// NewCodingLanguage .. 
+func NewCodingLanguage(name string) CodingLanguage {
+	return CodingLanguage{name: name}
+} 
 
 // CodingLanguages ..
 type CodingLanguages []CodingLanguage
 
-// HasCodingLanguage ..
-func (c CodingLanguages) HasCodingLanguage(targetLanguage CodingLanguage) bool {
+// NewCodingLanguages ..
+func NewCodingLanguages(languages ...CodingLanguage) CodingLanguages {
+	return append(CodingLanguages{}, languages...)
+}
+
+func (c CodingLanguages) has(targetLanguage CodingLanguage) bool {
 	for _, language := range c {
 		if language == targetLanguage {
 			return true
@@ -49,10 +35,16 @@ func (c CodingLanguages) HasCodingLanguage(targetLanguage CodingLanguage) bool {
 }
 
 // Match ..
-func (c CodingLanguages) Match(targetLanguages CodingLanguages) CodingLanguages {
-	matches := CodingLanguages{}
-	for _, language := range targetLanguages {
-		if c.HasCodingLanguage(language){
+func (c CodingLanguages) Match(targetLanguages Matchable) []Criterion {
+	matches := []Criterion{}
+
+	languages, ok := targetLanguages.(CodingLanguages)
+	if !ok {
+		return matches
+	}
+
+	for _, language := range languages {
+		if c.has(language){
 			matches = append(matches, language)
 		}
 	}

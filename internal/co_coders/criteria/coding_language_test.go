@@ -5,29 +5,38 @@ import (
 	"testing"
 )
 
+var (
+	C = NewCodingLanguage("C")
+	CSharp = NewCodingLanguage("C#")
+	Go = NewCodingLanguage("Go")
+	Java = NewCodingLanguage("Java")
+	JavaScript = NewCodingLanguage("JavaScript")
+	Python = NewCodingLanguage("Python")	
+)
+
 func TestMatchWithNoCodingLanguagesReturnsEmpty(t *testing.T){
-	codingLanguages := CodingLanguages{Java}
-	noCodingLanguages := CodingLanguages{}
+	codingLanguages := NewCodingLanguages(Java)
+	noCodingLanguages := NewCodingLanguages()
 
 	result := codingLanguages.Match(noCodingLanguages)
 
-	assert.Equal(t, noCodingLanguages, result)
+	assert.Equal(t, []Criterion{}, result)
 }
 
 func TestMatchWithOneMatchingCodingLanguageReturnsOneMatch(t *testing.T){
-	codingLanguages := CodingLanguages{Python}
-	matchingCodingLanguages := CodingLanguages{Python}
+	codingLanguages := NewCodingLanguages(Python)
+	matchingCodingLanguages := NewCodingLanguages(Python)
 
 	result := codingLanguages.Match(matchingCodingLanguages)
 
-	assert.Equal(t, matchingCodingLanguages, result)
+	assert.Equal(t, []Criterion{Python}, result)
 }
 
 func TestMatchWithOneSomeMatchingCodingLanguagesReturnsOnlyMatches(t *testing.T){
-	codingLanguages := CodingLanguages{CSharp, JavaScript, Go}
-	matchingCodingLanguages := CodingLanguages{C, CSharp, JavaScript}
+	codingLanguages := NewCodingLanguages(CSharp, JavaScript, Go)
+	matchingCodingLanguages := NewCodingLanguages(C, CSharp, JavaScript)
 
 	result := codingLanguages.Match(matchingCodingLanguages)
 
-	assert.Equal(t, CodingLanguages{CSharp, JavaScript}, result)
+	assert.Equal(t, []Criterion{CSharp, JavaScript}, result)
 }

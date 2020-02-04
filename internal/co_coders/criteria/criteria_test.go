@@ -36,14 +36,12 @@ func TestMatchScore50Percent(t *testing.T) {
 func TestMatchForTimeZoneCollabStyleAndCodingLanguage(t *testing.T){
 	tz := NewTimeZoneRange(0.0, 0.0)
 	//cs := NewCollabStyles(Pair, Team)
-	//cl := NewCodingLanguages(JavaScript, Java)
-	criteria := NewCriteria(tz /* cs, cl*/)
+	cl := NewCodingLanguages(JavaScript, Java)
+	criteria := NewCriteria(tz, cl /*, cs*/)
 	assert.Equal(t, criteria, criteria)
 }
 
-func NewCodingLanguages(languages ...CodingLanguage) CodingLanguages {
-	return append(CodingLanguages{}, languages...)
-}
+
 
 func NewCollabStyles(styles ...CollabStyle) CollabStyles {
 	return append(CollabStyles{}, styles...)
