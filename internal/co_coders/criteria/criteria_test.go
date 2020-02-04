@@ -7,8 +7,8 @@ import (
 
 
 func TestMatchHasAScore(t *testing.T) {
-	criteria := Criteria{CollabStyles: CollabStyles{Team}}
-	allMatchCriteria := Criteria{CollabStyles: CollabStyles{Team}}
+	criteria := Criteria{CollabStyles:  NewCollabStyles(Team)}
+	allMatchCriteria := Criteria{CollabStyles:  NewCollabStyles(Team)}
 
 	result := criteria.Match(allMatchCriteria)
 
@@ -16,8 +16,8 @@ func TestMatchHasAScore(t *testing.T) {
 }
 
 func TestMatchHasAScoreOfZeroWithNoMatch(t *testing.T) {
-	criteria := Criteria{CollabStyles: CollabStyles{Pair}}
-	noMatchCriteria := Criteria{CollabStyles: CollabStyles{Team}}
+	criteria := Criteria{CollabStyles: NewCollabStyles(Pair)}
+	noMatchCriteria := Criteria{CollabStyles:  NewCollabStyles(Team)}
 
 	result := criteria.Match(noMatchCriteria)
 
@@ -25,8 +25,8 @@ func TestMatchHasAScoreOfZeroWithNoMatch(t *testing.T) {
 }
 
 func TestMatchScore50Percent(t *testing.T) {
-	criteria := Criteria{CollabStyles: CollabStyles{Pair, Mob}}
-	halfMatchCriteria := Criteria{CollabStyles: CollabStyles{Mob}}
+	criteria := Criteria{CollabStyles:  NewCollabStyles(Pair, Mob)}
+	halfMatchCriteria := Criteria{CollabStyles:  NewCollabStyles(Mob)}
 
 	result := criteria.Match(halfMatchCriteria)
 
@@ -44,4 +44,3 @@ func TestMatchForTimeZoneCollabStyleAndCodingLanguage(t *testing.T){
 func NewCriteria(matchables ...Matchable) Criteria {
 	return New()
 }
-
