@@ -7,8 +7,8 @@ import (
 
 
 func TestMatchHasAScore(t *testing.T) {
-	criteria := Criteria{CollabStyles:  NewCollabStyles(Team)}
-	allMatchCriteria := Criteria{CollabStyles:  NewCollabStyles(Team)}
+	criteria := Criteria{CollabStyles:  NewCollabStyles("Team")}
+	allMatchCriteria := Criteria{CollabStyles:  NewCollabStyles("Team")}
 
 	result := criteria.Match(allMatchCriteria)
 
@@ -16,8 +16,8 @@ func TestMatchHasAScore(t *testing.T) {
 }
 
 func TestMatchHasAScoreOfZeroWithNoMatch(t *testing.T) {
-	criteria := Criteria{CollabStyles: NewCollabStyles(Pair)}
-	noMatchCriteria := Criteria{CollabStyles:  NewCollabStyles(Team)}
+	criteria := Criteria{CollabStyles: NewCollabStyles("Pair")}
+	noMatchCriteria := Criteria{CollabStyles:  NewCollabStyles("Team")}
 
 	result := criteria.Match(noMatchCriteria)
 
@@ -25,8 +25,8 @@ func TestMatchHasAScoreOfZeroWithNoMatch(t *testing.T) {
 }
 
 func TestMatchScore50Percent(t *testing.T) {
-	criteria := Criteria{CollabStyles:  NewCollabStyles(Pair, Mob)}
-	halfMatchCriteria := Criteria{CollabStyles:  NewCollabStyles(Mob)}
+	criteria := Criteria{CollabStyles:  NewCollabStyles("Pair", "Mob")}
+	halfMatchCriteria := Criteria{CollabStyles:  NewCollabStyles("Mob")}
 
 	result := criteria.Match(halfMatchCriteria)
 
@@ -35,8 +35,8 @@ func TestMatchScore50Percent(t *testing.T) {
 
 func TestMatchForTimeZoneCollabStyleAndCodingLanguage(t *testing.T){
 	tz := NewTimeZoneRange(0.0, 0.0)
-	cs := NewCollabStyles(Pair, Team)
-	cl := NewCodingLanguages(JavaScript, Java)
+	cs := NewCollabStyles("Pair", "Team")
+	cl := NewCodingLanguages("JavaScript", "Java")
 	criteria := NewCriteria(tz, cl , cs)
 	assert.Equal(t, criteria, criteria)
 }

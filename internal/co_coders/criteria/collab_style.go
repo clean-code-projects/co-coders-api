@@ -1,12 +1,11 @@
 package criteria
 
 
-// NewCollabStyle ...
-func NewCollabStyle(name string) NamedCriterion {
-	return NewNamedCriterion(name)
-}
-
 // NewCollabStyles ..
-func NewCollabStyles(styles ...Criterion) NamedCriteria {
-	return NewNamedCriteria(styles...)
+func NewCollabStyles(styles ...string) NamedCriteria {
+	criteria := []Criterion{}
+	for _, name := range styles {
+		criteria = append(criteria, NewNamedCriterion(name))
+	}
+	return NewNamedCriteria(criteria...)
 }

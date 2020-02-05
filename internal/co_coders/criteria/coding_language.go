@@ -1,12 +1,11 @@
 package criteria
 
 
-// NewCodingLanguage .. 
-func NewCodingLanguage(name string) NamedCriterion {
-	return NewNamedCriterion(name)
-} 
-
 // NewCodingLanguages ..
-func NewCodingLanguages(languages ...Criterion) NamedCriteria {
-	return NewNamedCriteria(languages...)
+func NewCodingLanguages(languages ...string) NamedCriteria {
+	criteria := []Criterion{}
+	for _, name := range languages {
+		criteria = append(criteria, NewNamedCriterion(name))
+	}
+	return NewNamedCriteria(criteria...)
 }
