@@ -32,7 +32,11 @@ type NamedCriteria []Criterion
 
 
 // NewNamedCriteria ...
-func NewNamedCriteria(criteria ...Criterion) NamedCriteria {
+func NewNamedCriteria(names ...string) NamedCriteria {
+	criteria := []Criterion{}
+	for _, name := range names {
+		criteria = append(criteria, NewNamedCriterion(name))
+	}
 	return append(NamedCriteria{}, criteria...)
 }
 
