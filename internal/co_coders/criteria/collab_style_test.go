@@ -6,36 +6,36 @@ import (
 )
 
 func TestMatchWithNoCollabStylesReturnsEmpty(t *testing.T) {
-	collabStyles := CollabStyles{Team}
-	noCollabStyles := CollabStyles{}
+	collabStyles := NewCollabStyles("Team")
+	noCollabStyles := NewCollabStyles()
 
 	result := collabStyles.Match(noCollabStyles)
 
-	assert.Equal(t, noCollabStyles, result)
+	assert.Equal(t, generateNamedMatches(), result)
 }
 
 func TestMatchWithNoMatchingCollabStylesReturnsNoMatches(t *testing.T) {
-	collabStyles := CollabStyles{Team}
-	stylesToMatch := CollabStyles{Mob}
+	collabStyles := NewCollabStyles("Team")
+	stylesToMatch := NewCollabStyles("Mob")
 
 	result := collabStyles.Match(stylesToMatch)
 
-	assert.Equal(t, CollabStyles{}, result)
+	assert.Equal(t, generateNamedMatches(), result)
 }
 
 func TestMatchWithOneMatchingCollabStyleReturnsMatch(t *testing.T) {
-	matchingCollabStyle := CollabStyles{Team}
+	matchingCollabStyle := NewCollabStyles("Team")
 
 	result := matchingCollabStyle.Match(matchingCollabStyle)
 
-	assert.Equal(t, matchingCollabStyle, result)
+	assert.Equal(t, generateNamedMatches("Team"), result)
 }
 
 func TestMatchWithSubsetOfMatchingCollabStylesReturnsOnlyMatchingStyles(t *testing.T) {
-	collabStyles := CollabStyles{Team, Pair}
-	stylesToMatch := CollabStyles{Pair, Mob}
+	collabStyles := NewCollabStyles("Team", "Pair")
+	stylesToMatch := NewCollabStyles("Pair", "Mob")
 
 	result := collabStyles.Match(stylesToMatch)
 
-	assert.Equal(t, CollabStyles{Pair}, result)
+	assert.Equal(t, generateNamedMatches("Pair"), result)
 }

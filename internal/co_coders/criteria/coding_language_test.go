@@ -6,28 +6,37 @@ import (
 )
 
 func TestMatchWithNoCodingLanguagesReturnsEmpty(t *testing.T){
-	codingLanguages := CodingLanguages{Java}
-	noCodingLanguages := CodingLanguages{}
+	codingLanguages := NewCodingLanguages("Java")
+	noCodingLanguages := NewCodingLanguages()
 
 	result := codingLanguages.Match(noCodingLanguages)
 
-	assert.Equal(t, noCodingLanguages, result)
+	assert.Equal(t, generateNamedMatches(), result)
 }
 
 func TestMatchWithOneMatchingCodingLanguageReturnsOneMatch(t *testing.T){
-	codingLanguages := CodingLanguages{Python}
-	matchingCodingLanguages := CodingLanguages{Python}
+	codingLanguages := NewCodingLanguages("Python")
+	matchingCodingLanguages := NewCodingLanguages("Python")
 
 	result := codingLanguages.Match(matchingCodingLanguages)
 
-	assert.Equal(t, matchingCodingLanguages, result)
+	assert.Equal(t, generateNamedMatches("Python"), result)
 }
 
 func TestMatchWithOneSomeMatchingCodingLanguagesReturnsOnlyMatches(t *testing.T){
-	codingLanguages := CodingLanguages{CSharp, JavaScript, Go}
-	matchingCodingLanguages := CodingLanguages{C, CSharp, JavaScript}
+	codingLanguages := NewCodingLanguages("C#", "JavaScript", "Go")
+	matchingCodingLanguages := NewCodingLanguages("C", "C#", "JavaScript")
 
 	result := codingLanguages.Match(matchingCodingLanguages)
 
-	assert.Equal(t, CodingLanguages{CSharp, JavaScript}, result)
+	assert.Equal(t, generateNamedMatches("C#", "JavaScript"), result)
+}
+
+
+func generateNamedMatches(names ...string) []Criterion {
+	criteria := []Criterion{}
+	for _, name := range names {
+		criteria = append(criteria, NewNamedCriterion(name))
+	}	
+	return criteria
 }

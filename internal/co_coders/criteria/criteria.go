@@ -3,12 +3,12 @@ package criteria
 
 // Criteria ..
 type Criteria struct {
-	CollabStyles CollabStyles
+	CollabStyles NamedCriteria
 }
 
 // New ...
 func New() Criteria {
-	return Criteria{CollabStyles:CollabStyles{}}
+	return Criteria{CollabStyles:NewCollabStyles()}
 }
 
 // Match ..
@@ -22,14 +22,3 @@ func (c Criteria) Match(criteria Criteria) Matches {
 type Matches struct {
 	Score float64
 }
-
-// Criterion ..
-type Criterion interface {
-	String() string
-}
-
-// Matchable ..
-type Matchable interface {
-	Match(m Matchable) []Criterion
-}
-
