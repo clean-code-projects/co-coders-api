@@ -4,6 +4,7 @@
       "path": "."
     }
   ],
+  "go.lintTool": "golangci-lint",
   "settings": {
     "coverage-gutters.coverageReportFileName": "coverage.xml",
     "go.coverOnSave": true,
