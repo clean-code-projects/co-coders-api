@@ -13,7 +13,7 @@ type Matchable interface {
 }
 
 // NamedCriterion ..
-type NamedCriterion struct{
+type NamedCriterion struct {
 	name string
 }
 
@@ -28,8 +28,7 @@ func (c NamedCriterion) String() string {
 }
 
 // NamedCriteria ...
-type NamedCriteria []Criterion 
-
+type NamedCriteria []Criterion
 
 // NewNamedCriteria ...
 func NewNamedCriteria(names ...string) NamedCriteria {
@@ -57,12 +56,12 @@ func (c NamedCriteria) Match(targetCriteria Matchable) []Criterion {
 	if !ok {
 		return matches
 	}
-	
+
 	for _, criteria := range criteria {
-		if c.has(criteria){
+		if c.has(criteria) {
 			matches = append(matches, criteria)
 		}
 	}
-	
+
 	return matches
 }
