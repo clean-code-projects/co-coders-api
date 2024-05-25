@@ -1,0 +1,24 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "go.lintTool": "golangci-lint",
+  "settings": {
+    "coverage-gutters.coverageReportFileName": "coverage.xml",
+    "go.coverOnSave": true,
+    "go.coverOnSingleTest": true,
+    "go.coverOnSingleTestFile": true,
+    "go.testOnSave": true,
+    "emeraldwalk.runonsave": {
+      "commands": [
+        {
+          "match": "\\.go$",
+          "isAsync": true,
+          "cmd": "gocov convert cover.out | gocov-xml > coverage.xml"
+        }
+      ]
+    }
+  }
+}
